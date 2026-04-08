@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { CourseHome } from "@/components/course-home";
+import { LogoMark } from "@/components/logo-mark";
 import { COURSE_SLUG, getCourseContent } from "@/lib/course-content";
 
 function serializeCourse(content: NonNullable<Awaited<ReturnType<typeof getCourseContent>>>) {
@@ -57,9 +58,9 @@ export default async function Home() {
       <main className="min-h-screen bg-[linear-gradient(180deg,#10263b_0%,#09111b_100%)] text-white">
         <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
           <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
-            <p className="text-sm uppercase tracking-[0.28em] text-white/50">
-              Vídeo Prime
-            </p>
+            <div className="mx-auto w-fit">
+              <LogoMark />
+            </div>
             <h1 className="mt-4 text-3xl font-semibold">Curso não encontrado</h1>
             <p className="mt-3 text-white/70">
               Nenhum conteúdo ativo foi encontrado para o slug {COURSE_SLUG}.
@@ -76,9 +77,9 @@ export default async function Home() {
         <main className="min-h-screen bg-black text-white">
           <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
             <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
-              <p className="text-sm uppercase tracking-[0.28em] text-white/50">
-                Vídeo Prime
-              </p>
+              <div className="mx-auto w-fit">
+                <LogoMark />
+              </div>
               <h1 className="mt-4 text-3xl font-semibold">Carregando plataforma</h1>
             </div>
           </div>

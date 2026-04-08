@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoMark } from "@/components/logo-mark";
 
 type CourseHeaderProps = {
   title: string;
@@ -23,9 +24,7 @@ export function CourseHeader({
     <header className={`${glassClassName} sticky top-0 z-20 mt-4`}>
       <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 lg:px-10">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-sm font-bold text-black">
-            VP
-          </div>
+          <LogoMark />
           <div>
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
               {brandLabel}

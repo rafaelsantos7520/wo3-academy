@@ -13,8 +13,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Video Prime",
-  description: "Aplicacao simples de videos feita com Next.js 15.",
+  title: "Vídeo Prime",
+  description: "Aplicação simples de vídeos feita com Next.js 15.",
+  icons: {
+    icon: "/vp-logo.svg",
+    shortcut: "/vp-logo.svg",
+    apple: "/vp-logo.svg",
+  },
 };
 
 export default function RootLayout({

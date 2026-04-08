@@ -64,6 +64,7 @@ const GLASS =
   "border border-white/20 bg-[linear-gradient(135deg,rgba(18,18,18,0.16),rgba(24,24,24,0.10))] backdrop-blur-2xl shadow-[0_10px_36px_rgba(0,0,0,0.28)]";
 const GLASS_SOFT =
   "border border-white/14 bg-[linear-gradient(135deg,rgba(18,18,18,0.12),rgba(24,24,24,0.08))] backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.24)]";
+const WATCHED_EPISODES_KEY = "wo3academy:watched-episodes";
 
 function formatDate(value: string | null | undefined) {
   if (!value) {
@@ -123,6 +124,7 @@ export function CourseHome({ course }: CourseHomeProps) {
   const [playback, setPlayback] = useState<PlaybackState | null>(null);
   const [playerError, setPlayerError] = useState<string | null>(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [watchedEpisodes, setWatchedEpisodes] = useState<string[]>([]);
 
   const activeEpisode = flatEpisodes.find((episode) => episode.id === activeEpisodeId);
   const activeModule =
@@ -138,6 +140,39 @@ export function CourseHome({ course }: CourseHomeProps) {
     setIsPlayerReady(false);
     setPlayerError(null);
   }
+
+  useEffect(() => {
+    const rawValue = window.localStorage.getItem(WATCHED_EPISODES_KEY);
+
+    if (!rawValue) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(rawValue) as string[];
+      if (Array.isArray(parsed)) {
+        setWatchedEpisodes(parsed);
+      }
+    } catch {
+      window.localStorage.removeItem(WATCHED_EPISODES_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isWatching || !activeEpisodeId) {
+      return;
+    }
+
+    setWatchedEpisodes((previousState) => {
+      if (previousState.includes(activeEpisodeId)) {
+        return previousState;
+      }
+
+      const nextState = [...previousState, activeEpisodeId];
+      window.localStorage.setItem(WATCHED_EPISODES_KEY, JSON.stringify(nextState));
+      return nextState;
+    });
+  }, [activeEpisodeId, isWatching]);
 
   useEffect(() => {
     if (activeEpisode) {
@@ -477,6 +512,7 @@ export function CourseHome({ course }: CourseHomeProps) {
           <div className="mt-3 space-y-2">
             {activeModule?.episodes.map((episode) => {
               const selected = episode.id === activeEpisodeId;
+              const watched = watchedEpisodes.includes(episode.id);
 
               return (
                 <Link
@@ -502,9 +538,15 @@ export function CourseHome({ course }: CourseHomeProps) {
                       </p>
                     </div>
                     <div className="shrink-0">
-                      <span className="rounded-full bg-black/30 px-3 py-1 text-xs text-white/85">
-                        {episode.order}
-                      </span>
+                      {watched ? (
+                        <span className="rounded-full border border-emerald-300/45 bg-emerald-400/20 px-3 py-1 text-xs text-emerald-100">
+                          Assistido
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-black/30 px-3 py-1 text-xs text-white/85">
+                          {episode.order}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>
