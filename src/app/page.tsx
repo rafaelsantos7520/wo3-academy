@@ -1,103 +1,91 @@
-import Image from "next/image";
+import { Suspense } from "react";
+import { CourseHome } from "@/components/course-home";
+import { COURSE_SLUG, getCourseContent } from "@/lib/course-content";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+function serializeCourse(content: NonNullable<Awaited<ReturnType<typeof getCourseContent>>>) {
+  return {
+    id: content.id.toString(),
+    title: content.title,
+    slug: content.slug,
+    description: content.description,
+    release_date: content.release_date?.toISOString() ?? null,
+    categories: {
+      primary: content.categories,
+      related: content.content_categories.map(({ categories }) => categories),
+    },
+    content_types: content.content_types,
+    modules: content.modules.map((module) => ({
+      id: module.id.toString(),
+      uuid: module.uuid,
+      name: module.name,
+      slug: module.slug,
+      role: module.role,
+      description: module.description,
+      order: module.order,
+      is_active: module.is_active,
+      created_at: module.created_at?.toISOString() ?? null,
+      updated_at: module.updated_at?.toISOString() ?? null,
+      episodes: module.episodes.map((episode) => ({
+        id: episode.id.toString(),
+        uuid: episode.uuid,
+        name: episode.name,
+        slug: episode.slug,
+        role: episode.role,
+        description: episode.description,
+        duration: episode.duration,
+        order: episode.order,
+        is_active: episode.is_active,
+        release_date: episode.release_date?.toISOString() ?? null,
+        thumbnail_url: episode.thumbnail_url,
+        cover: episode.cover,
+        video_url: episode.video_url,
+        video_id: episode.video_id,
+        source_cdn: episode.source_cdn,
+        token_expires_at: episode.token_expires_at?.toISOString() ?? null,
+        created_at: episode.created_at?.toISOString() ?? null,
+        updated_at: episode.updated_at?.toISOString() ?? null,
+      })),
+    })),
+  };
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default async function Home() {
+  const course = await getCourseContent();
+
+  if (!course) {
+    return (
+      <main className="min-h-screen bg-[linear-gradient(180deg,#10263b_0%,#09111b_100%)] text-white">
+        <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
+          <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
+            <p className="text-sm uppercase tracking-[0.28em] text-white/50">
+              Video Prime
+            </p>
+            <h1 className="mt-4 text-3xl font-semibold">Curso nao encontrado</h1>
+            <p className="mt-3 text-white/70">
+              Nenhum conteudo ativo foi encontrado para o slug {COURSE_SLUG}.
+            </p>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    );
+  }
+
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-black text-white">
+          <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
+            <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
+              <p className="text-sm uppercase tracking-[0.28em] text-white/50">
+                Video Prime
+              </p>
+              <h1 className="mt-4 text-3xl font-semibold">Carregando plataforma</h1>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <CourseHome course={serializeCourse(course)} />
+    </Suspense>
   );
 }

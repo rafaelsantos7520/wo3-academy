@@ -1,0 +1,579 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model account_statements {
+  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid              String        @db.Char(36)
+  user_id           BigInt        @db.UnsignedBigInt
+  type              String        @db.VarChar(255)
+  value             Decimal       @db.Decimal(8, 2)
+  operation         String        @db.VarChar(255)
+  description_extra String?       @db.VarChar(255)
+  created_at        DateTime?     @db.Timestamp(0)
+  updated_at        DateTime?     @db.Timestamp(0)
+  users             users         @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "account_statements_user_id_foreign")
+  commissions       commissions[]
+
+  @@index([user_id], map: "account_statements_user_id_foreign")
+}
+
+model actors {
+  id             BigInt           @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid           String           @unique(map: "actors_uuid_unique") @db.Char(36)
+  name           String           @db.VarChar(255)
+  type           String           @default("actor") @db.VarChar(255)
+  slug           String           @unique(map: "actors_slug_unique") @db.VarChar(255)
+  avatar         String?          @db.VarChar(255)
+  is_active      Boolean          @default(true)
+  biography      String?          @db.Text
+  instagram      String?          @db.VarChar(255)
+  created_at     DateTime?        @db.Timestamp(0)
+  updated_at     DateTime?        @db.Timestamp(0)
+  content_actors content_actors[]
+}
+
+model categories {
+  id                 BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid               String               @unique(map: "categories_uuid_unique") @db.Char(36)
+  name               String               @unique(map: "categories_name_unique") @db.VarChar(255)
+  category_id        BigInt?              @db.UnsignedBigInt
+  is_active          Boolean              @default(true)
+  is_root            Boolean              @default(false)
+  slug               String               @unique(map: "categories_slug_unique") @db.VarChar(255)
+  description        String?              @db.VarChar(255)
+  cover              String?              @db.VarChar(255)
+  created_at         DateTime?            @db.Timestamp(0)
+  updated_at         DateTime?            @db.Timestamp(0)
+  content_categories content_categories[]
+  contents           contents[]
+  products           products[]
+}
+
+model commissions {
+  id                   BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  account_statement_id BigInt?             @db.UnsignedBigInt
+  uuid                 String              @db.Char(36)
+  user_id              BigInt              @db.UnsignedBigInt
+  order_id             BigInt?             @db.UnsignedBigInt
+  value                Decimal             @default(0.00) @db.Decimal(8, 2)
+  processed            Boolean             @default(false)
+  created_at           DateTime?           @db.Timestamp(0)
+  updated_at           DateTime?           @db.Timestamp(0)
+  account_statements   account_statements? @relation(fields: [account_statement_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "commissions_account_statement_id_foreign")
+  orders               orders?             @relation(fields: [order_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "commissions_order_id_foreign")
+  users                users               @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "commissions_user_id_foreign")
+
+  @@index([account_statement_id], map: "commissions_account_statement_id_foreign")
+  @@index([order_id], map: "commissions_order_id_foreign")
+  @@index([user_id], map: "commissions_user_id_foreign")
+}
+
+model content_actors {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  content_id BigInt    @db.UnsignedBigInt
+  actor_id   BigInt    @db.UnsignedBigInt
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  actors     actors    @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "content_actors_actor_id_foreign")
+  contents   contents  @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "content_actors_content_id_foreign")
+
+  @@unique([content_id, actor_id], map: "content_actors_content_id_actor_id_unique")
+  @@index([actor_id], map: "content_actors_actor_id_foreign")
+}
+
+model content_categories {
+  id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  content_id  BigInt     @db.UnsignedBigInt
+  category_id BigInt     @db.UnsignedBigInt
+  created_at  DateTime?  @db.Timestamp(0)
+  updated_at  DateTime?  @db.Timestamp(0)
+  categories  categories @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "content_categories_category_id_foreign")
+  contents    contents   @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "content_categories_content_id_foreign")
+
+  @@unique([content_id, category_id], map: "content_categories_content_id_category_id_unique")
+  @@index([category_id], map: "content_categories_category_id_foreign")
+}
+
+model content_types {
+  id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid        String     @unique(map: "content_types_uuid_unique") @db.Char(36)
+  name        String     @unique(map: "content_types_name_unique") @db.VarChar(255)
+  slug        String     @unique(map: "content_types_slug_unique") @db.VarChar(255)
+  description String?    @db.VarChar(255)
+  cover       String?    @db.VarChar(255)
+  is_active   Boolean    @default(true)
+  created_at  DateTime?  @db.Timestamp(0)
+  updated_at  DateTime?  @db.Timestamp(0)
+  contents    contents[]
+}
+
+model contents {
+  id                 BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid               String               @unique(map: "contents_uuid_unique") @db.Char(36)
+  role               String?              @db.VarChar(255)
+  title              String               @db.VarChar(255)
+  slug               String               @unique(map: "contents_slug_unique") @db.VarChar(255)
+  description        String?              @db.Text
+  poster             String?              @db.VarChar(255)
+  cover              String?              @db.VarChar(255)
+  trailer            String?              @db.VarChar(255)
+  category_id        BigInt               @db.UnsignedBigInt
+  is_active          Boolean              @default(true)
+  content_type_id    BigInt               @db.UnsignedBigInt
+  release_date       DateTime             @db.Date
+  created_at         DateTime?            @db.Timestamp(0)
+  updated_at         DateTime?            @db.Timestamp(0)
+  content_actors     content_actors[]
+  content_categories content_categories[]
+  categories         categories           @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "contents_category_id_foreign")
+  content_types      content_types        @relation(fields: [content_type_id], references: [id], onUpdate: Restrict, map: "contents_content_type_id_foreign")
+  episodes           episodes[]
+  favorites          favorites[]
+  modules            modules[]
+  playlist_contents  playlist_contents[]
+  watch_histories    watch_histories[]
+
+  @@index([category_id], map: "contents_category_id_foreign")
+  @@index([content_type_id], map: "contents_content_type_id_foreign")
+}
+
+model episode_contents {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String    @db.Char(36)
+  episode_id Int
+  content    Json?
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model episodes {
+  id                   BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid                 String            @unique(map: "episodes_uuid_unique") @db.Char(36)
+  role                 String?           @db.VarChar(255)
+  content_id           BigInt            @db.UnsignedBigInt
+  module_id            BigInt            @db.UnsignedBigInt
+  name                 String            @db.VarChar(255)
+  slug                 String            @db.VarChar(255)
+  description          String?           @db.Text
+  is_active            Boolean           @default(true)
+  duration             Int               @default(0)
+  order                Int               @default(0)
+  release_date         DateTime?         @db.Date
+  thumbnail_url        String?           @db.VarChar(255)
+  cover                String?           @db.VarChar(255)
+  video_url            String?           @db.VarChar(255)
+  token                String?           @db.Text
+  video_id             String?           @db.VarChar(255)
+  source_cdn           String            @default("cloudflare") @db.VarChar(255)
+  should_refresh_token Boolean           @default(false)
+  token_expires_at     DateTime?         @db.DateTime(0)
+  created_at           DateTime?         @db.Timestamp(0)
+  updated_at           DateTime?         @db.Timestamp(0)
+  contents             contents          @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "episodes_content_id_foreign")
+  modules              modules           @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "episodes_module_id_foreign")
+  user_progress        user_progress[]
+  watch_histories      watch_histories[]
+
+  @@index([content_id], map: "episodes_content_id_foreign")
+  @@index([module_id], map: "episodes_module_id_foreign")
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model favorites {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  episode_id BigInt    @db.UnsignedBigInt
+  uuid       String    @unique(map: "favorites_uuid_unique") @db.Char(36)
+  user_id    BigInt    @db.UnsignedBigInt
+  content_id BigInt    @db.UnsignedBigInt
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  contents   contents  @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "favorites_content_id_foreign")
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "favorites_user_id_foreign")
+
+  @@index([content_id], map: "favorites_content_id_foreign")
+  @@index([user_id], map: "favorites_user_id_foreign")
+}
+
+model jobs {
+  id           BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  queue        String @db.VarChar(255)
+  payload      String @db.LongText
+  attempts     Int    @db.UnsignedTinyInt
+  reserved_at  Int?   @db.UnsignedInt
+  available_at Int    @db.UnsignedInt
+  created_at   Int    @db.UnsignedInt
+
+  @@index([queue], map: "jobs_queue_index")
+}
+
+model media {
+  id                    BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  model_type            String    @db.VarChar(255)
+  model_id              BigInt    @db.UnsignedBigInt
+  uuid                  String?   @unique(map: "media_uuid_unique") @db.Char(36)
+  collection_name       String    @db.VarChar(255)
+  name                  String    @db.VarChar(255)
+  file_name             String    @db.VarChar(255)
+  mime_type             String?   @db.VarChar(255)
+  disk                  String    @db.VarChar(255)
+  conversions_disk      String?   @db.VarChar(255)
+  size                  BigInt    @db.UnsignedBigInt
+  manipulations         Json
+  custom_properties     Json
+  generated_conversions Json
+  responsive_images     Json
+  order_column          Int?      @db.UnsignedInt
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+
+  @@index([model_type, model_id], map: "media_model_type_model_id_index")
+  @@index([order_column], map: "media_order_column_index")
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+model model_has_permissions {
+  permission_id BigInt      @db.UnsignedBigInt
+  model_type    String      @db.VarChar(255)
+  model_id      BigInt      @db.UnsignedBigInt
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "model_has_permissions_permission_id_foreign")
+
+  @@id([permission_id, model_id, model_type])
+  @@index([model_id, model_type], map: "model_has_permissions_model_id_model_type_index")
+}
+
+model model_has_roles {
+  role_id    BigInt @db.UnsignedBigInt
+  model_type String @db.VarChar(255)
+  model_id   BigInt @db.UnsignedBigInt
+  roles      roles  @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "model_has_roles_role_id_foreign")
+
+  @@id([role_id, model_id, model_type])
+  @@index([model_id, model_type], map: "model_has_roles_model_id_model_type_index")
+}
+
+model modules {
+  id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid        String     @unique(map: "modules_uuid_unique") @db.Char(36)
+  role        String?    @db.VarChar(255)
+  name        String     @db.VarChar(255)
+  slug        String     @db.VarChar(255)
+  description String?    @db.Text
+  order       Int        @default(0)
+  content_id  BigInt     @db.UnsignedBigInt
+  is_active   Boolean    @default(true)
+  created_at  DateTime?  @db.Timestamp(0)
+  updated_at  DateTime?  @db.Timestamp(0)
+  episodes    episodes[]
+  contents    contents   @relation(fields: [content_id], references: [id], onUpdate: Restrict, map: "modules_content_id_foreign")
+
+  @@index([content_id], map: "modules_content_id_foreign")
+}
+
+model orders {
+  id               BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid             String        @db.VarChar(255)
+  user_id          BigInt        @db.UnsignedBigInt
+  product_id       BigInt        @db.UnsignedBigInt
+  country_code     String        @default("BR") @db.VarChar(255)
+  value            Decimal       @db.Decimal(8, 2)
+  points           Decimal       @db.Decimal(8, 2)
+  commission_value Decimal       @db.Decimal(8, 2)
+  invoice_url      String?       @db.VarChar(255)
+  payment_date     DateTime?     @db.DateTime(0)
+  status           Int           @default(0)
+  payment_number   String?       @db.VarChar(255)
+  payment_method   String?       @db.VarChar(255)
+  metadata         Json?
+  created_at       DateTime?     @db.Timestamp(0)
+  updated_at       DateTime?     @db.Timestamp(0)
+  deleted_at       DateTime?     @db.Timestamp(0)
+  commissions      commissions[]
+  products         products      @relation(fields: [product_id], references: [id], onUpdate: Restrict, map: "orders_product_id_foreign")
+  users            users         @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "orders_user_id_foreign")
+  point_entries    points[]
+  vouchers         vouchers[]
+
+  @@index([product_id], map: "orders_product_id_foreign")
+  @@index([user_id], map: "orders_user_id_foreign")
+}
+
+model password_reset_tokens {
+  email      String    @id @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model password_resets {
+  email      String    @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+
+  @@index([email], map: "password_resets_email_index")
+  @@ignore
+}
+
+model permissions {
+  id                    BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  name                  String                  @db.VarChar(255)
+  guard_name            String                  @db.VarChar(255)
+  is_fixed              Boolean                 @default(false)
+  created_at            DateTime?               @db.Timestamp(0)
+  updated_at            DateTime?               @db.Timestamp(0)
+  model_has_permissions model_has_permissions[]
+  role_has_permissions  role_has_permissions[]
+
+  @@unique([name, guard_name], map: "permissions_name_guard_name_unique")
+}
+
+model personal_access_tokens {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tokenable_type String    @db.VarChar(255)
+  tokenable_id   BigInt    @db.UnsignedBigInt
+  name           String    @db.VarChar(255)
+  token          String    @unique(map: "personal_access_tokens_token_unique") @db.VarChar(64)
+  abilities      String?   @db.Text
+  last_used_at   DateTime? @db.Timestamp(0)
+  expires_at     DateTime? @db.Timestamp(0)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+
+  @@index([tokenable_type, tokenable_id], map: "personal_access_tokens_tokenable_type_tokenable_id_index")
+}
+
+model playlist_contents {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid        String    @unique(map: "playlist_contents_uuid_unique") @db.Char(36)
+  playlist_id BigInt    @db.UnsignedBigInt
+  content_id  BigInt    @db.UnsignedBigInt
+  order       Int
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+  contents    contents  @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "playlist_contents_content_id_foreign")
+  playlists   playlists @relation(fields: [playlist_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "playlist_contents_playlist_id_foreign")
+
+  @@index([content_id], map: "playlist_contents_content_id_foreign")
+  @@index([playlist_id], map: "playlist_contents_playlist_id_foreign")
+}
+
+model playlists {
+  id                BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid              String              @unique(map: "playlists_uuid_unique") @db.Char(36)
+  name              String              @db.VarChar(255)
+  description       String?             @db.VarChar(255)
+  user_id           BigInt              @db.UnsignedBigInt
+  created_at        DateTime?           @db.Timestamp(0)
+  updated_at        DateTime?           @db.Timestamp(0)
+  playlist_contents playlist_contents[]
+  users             users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "playlists_user_id_foreign")
+
+  @@index([user_id], map: "playlists_user_id_foreign")
+}
+
+model points {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String    @db.Char(36)
+  user_id    BigInt    @db.UnsignedBigInt
+  order_id   BigInt?   @db.UnsignedBigInt
+  value      Decimal   @default(0.00) @db.Decimal(8, 2)
+  processed  Boolean   @default(false)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  orders     orders?   @relation(fields: [order_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "points_order_id_foreign")
+  users      users     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "points_user_id_foreign")
+
+  @@index([order_id], map: "points_order_id_foreign")
+  @@index([user_id], map: "points_user_id_foreign")
+}
+
+model products {
+  id               BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid             String      @db.Char(36)
+  name             String      @db.VarChar(255)
+  description      String?     @db.VarChar(255)
+  thumbnail        String?     @db.VarChar(255)
+  category_id      BigInt?     @db.UnsignedBigInt
+  price            Decimal?    @db.Decimal(8, 2)
+  for_sale         Boolean     @default(true)
+  voucher_quantity Int?
+  points           Decimal?    @db.Decimal(8, 2)
+  commission       Decimal?    @db.Decimal(8, 2)
+  created_at       DateTime?   @db.Timestamp(0)
+  updated_at       DateTime?   @db.Timestamp(0)
+  deleted_at       DateTime?   @db.Timestamp(0)
+  orders           orders[]
+  categories       categories? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "products_category_id_foreign")
+
+  @@index([category_id], map: "products_category_id_foreign")
+}
+
+model role_has_permissions {
+  permission_id BigInt      @db.UnsignedBigInt
+  role_id       BigInt      @db.UnsignedBigInt
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "role_has_permissions_permission_id_foreign")
+  roles         roles       @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "role_has_permissions_role_id_foreign")
+
+  @@id([permission_id, role_id])
+  @@index([role_id], map: "role_has_permissions_role_id_foreign")
+}
+
+model roles {
+  id                   BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  name                 String                 @db.VarChar(255)
+  title                String                 @db.VarChar(255)
+  guard_name           String                 @db.VarChar(255)
+  is_fixed             Boolean                @default(false)
+  created_at           DateTime?              @db.Timestamp(0)
+  updated_at           DateTime?              @db.Timestamp(0)
+  model_has_roles      model_has_roles[]
+  role_has_permissions role_has_permissions[]
+
+  @@unique([name, guard_name], map: "roles_name_guard_name_unique")
+}
+
+model settings {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String?   @db.VarChar(255)
+  val        String?   @db.Text
+  type       String    @default("string") @db.VarChar(90)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+}
+
+model user_progress {
+  id                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid                String    @unique(map: "user_progress_uuid_unique") @db.Char(36)
+  user_id             BigInt    @db.UnsignedBigInt
+  episode_id          BigInt    @db.UnsignedBigInt
+  progress_percentage Decimal   @default(0.00) @db.Decimal(5, 2)
+  last_watched_at     DateTime  @db.Timestamp(0)
+  is_completed        Boolean   @default(false)
+  created_at          DateTime? @db.Timestamp(0)
+  updated_at          DateTime? @db.Timestamp(0)
+  episodes            episodes  @relation(fields: [episode_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "user_progress_episode_id_foreign")
+  users               users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "user_progress_user_id_foreign")
+
+  @@index([episode_id], map: "user_progress_episode_id_foreign")
+  @@index([user_id], map: "user_progress_user_id_foreign")
+}
+
+model users {
+  id                                BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  api_key                           String?              @db.VarChar(255)
+  sponsor_uuid                      String?              @db.Char(36)
+  uuid                              String               @unique(map: "users_uuid_unique") @db.VarChar(255)
+  name                              String
+  login                             Bytes?               @db.VarBinary(255)
+  hashed_login                      String?
+  active                            String?
+  role_type                         String?
+  email                             String
+  document                          String?              @db.VarChar(255)
+  voucher                           String?              @db.VarChar(255)
+  phone_number                      String?
+  phone_code                        String?              @default("BR")
+  country_code                      String?              @default("BR")
+  classification                    String?
+  affiliation                       String?
+  email_verified_at                 DateTime?            @db.Timestamp(0)
+  password                          String
+  remember_token                    String?              @db.VarChar(100)
+  created_at                        DateTime?            @db.Timestamp(0)
+  updated_at                        DateTime?            @db.Timestamp(0)
+  deleted_at                        DateTime?            @db.Timestamp(0)
+  login_char                        String?
+  account_statements                account_statements[]
+  commissions                       commissions[]
+  favorites                         favorites[]
+  orders                            orders[]
+  playlists                         playlists[]
+  points                            points[]
+  user_progress                     user_progress[]
+  vouchers_vouchers_owner_idTousers vouchers[]           @relation("vouchers_owner_idTousers")
+  vouchers_vouchers_user_idTousers  vouchers[]           @relation("vouchers_user_idTousers")
+  wallets                           wallets[]
+  watch_histories                   watch_histories[]
+
+  @@unique([email, deleted_at], map: "users_email_deleted_at_unique")
+  @@index([classification], map: "idx_classification")
+  @@index([login, email], map: "idx_email_login")
+  @@index([id], map: "idx_users_id")
+  @@index([classification], map: "users_classification_index")
+  @@index([hashed_login], map: "users_hashed_login_index")
+  @@index([login], map: "users_login_index")
+}
+
+model vouchers {
+  id                             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  code                           String    @unique(map: "vouchers_code_unique") @db.VarChar(255)
+  owner_id                       BigInt?   @db.UnsignedBigInt
+  original_owner_id              Int?      @db.UnsignedInt
+  user_id                        BigInt?   @db.UnsignedBigInt
+  order_id                       BigInt?   @db.UnsignedBigInt
+  name                           String?   @db.VarChar(255)
+  email                          String?   @db.VarChar(255)
+  document                       String?   @db.VarChar(255)
+  phone                          String?   @db.VarChar(255)
+  used_at                        DateTime? @db.Timestamp(0)
+  created_at                     DateTime? @db.Timestamp(0)
+  updated_at                     DateTime? @db.Timestamp(0)
+  orders                         orders?   @relation(fields: [order_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "vouchers_order_id_foreign")
+  users_vouchers_owner_idTousers users?    @relation("vouchers_owner_idTousers", fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "vouchers_owner_id_foreign")
+  users_vouchers_user_idTousers  users?    @relation("vouchers_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "vouchers_user_id_foreign")
+
+  @@index([order_id], map: "vouchers_order_id_foreign")
+  @@index([owner_id], map: "vouchers_owner_id_foreign")
+  @@index([user_id], map: "vouchers_user_id_foreign")
+}
+
+model wallets {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String    @db.Char(36)
+  user_id    BigInt    @db.UnsignedBigInt
+  type       String    @db.VarChar(255)
+  amount     Decimal   @default(0.00) @db.Decimal(20, 2)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "wallets_user_id_foreign")
+
+  @@index([user_id], map: "wallets_user_id_foreign")
+}
+
+model watch_histories {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String    @unique(map: "watch_histories_uuid_unique") @db.Char(36)
+  user_id    BigInt    @db.UnsignedBigInt
+  content_id BigInt    @db.UnsignedBigInt
+  episode_id BigInt    @db.UnsignedBigInt
+  watched_at Int       @default(0)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  contents   contents  @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "watch_histories_content_id_foreign")
+  episodes   episodes  @relation(fields: [episode_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "watch_histories_episode_id_foreign")
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "watch_histories_user_id_foreign")
+
+  @@index([content_id], map: "watch_histories_content_id_foreign")
+  @@index([episode_id], map: "watch_histories_episode_id_foreign")
+  @@index([user_id], map: "watch_histories_user_id_foreign")
+}
