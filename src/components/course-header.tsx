@@ -16,7 +16,7 @@ export function CourseHeader({
   lessonsCount,
   showBackLink = false,
   backHref = "/",
-  brandLabel = "Video Prime",
+  brandLabel = "Vídeo Prime",
   glassClassName,
 }: CourseHeaderProps) {
   return (
@@ -40,13 +40,13 @@ export function CourseHeader({
               href={backHref}
               className="rounded-full border border-white/32 bg-black/20 px-4 py-2 text-sm text-white/90 transition hover:bg-black/35"
             >
-              Voltar para apresentacao
+              Voltar para apresentação
             </Link>
           ) : null}
 
           <div className="hidden gap-3 text-sm text-white/75 md:flex">
             <span className="rounded-full border border-white/28 bg-black/20 px-4 py-2">
-              {modulesCount} modulos
+              {modulesCount} módulos
             </span>
             <span className="rounded-full border border-white/28 bg-black/20 px-4 py-2">
               {lessonsCount} aulas
@@ -57,4 +57,3 @@ export function CourseHeader({
     </header>
   );
 }
-

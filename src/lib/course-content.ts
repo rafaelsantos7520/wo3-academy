@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
 export const COURSE_SLUG = "curso-wo3";
 
-export async function getCourseContent() {
-  return prisma.contents.findFirst({
+const getCachedCourseContent = unstable_cache(
+  async () =>
+    prisma.contents.findFirst({
     where: {
       is_active: true,
       OR: [
@@ -100,5 +102,13 @@ export async function getCourseContent() {
         },
       },
     },
-  });
+    }),
+  ["course-content", COURSE_SLUG],
+  {
+    revalidate: 300,
+  },
+);
+
+export async function getCourseContent() {
+  return getCachedCourseContent();
 }

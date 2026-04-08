@@ -58,11 +58,11 @@ export default async function Home() {
         <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
           <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
             <p className="text-sm uppercase tracking-[0.28em] text-white/50">
-              Video Prime
+              Vídeo Prime
             </p>
-            <h1 className="mt-4 text-3xl font-semibold">Curso nao encontrado</h1>
+            <h1 className="mt-4 text-3xl font-semibold">Curso não encontrado</h1>
             <p className="mt-3 text-white/70">
-              Nenhum conteudo ativo foi encontrado para o slug {COURSE_SLUG}.
+              Nenhum conteúdo ativo foi encontrado para o slug {COURSE_SLUG}.
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default async function Home() {
           <div className="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
             <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center">
               <p className="text-sm uppercase tracking-[0.28em] text-white/50">
-                Video Prime
+                Vídeo Prime
               </p>
               <h1 className="mt-4 text-3xl font-semibold">Carregando plataforma</h1>
             </div>
