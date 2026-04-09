@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoMark } from "@/components/logo-mark";
 
 type CourseHeaderProps = {
   title: string;
@@ -16,16 +17,14 @@ export function CourseHeader({
   lessonsCount,
   showBackLink = false,
   backHref = "/",
-  brandLabel = "Video Prime",
+  brandLabel = "Vídeo Prime",
   glassClassName,
 }: CourseHeaderProps) {
   return (
     <header className={`${glassClassName} sticky top-0 z-20 mt-4`}>
       <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 lg:px-10">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-sm font-bold text-black">
-            VP
-          </div>
+          <LogoMark />
           <div>
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
               {brandLabel}
@@ -40,13 +39,13 @@ export function CourseHeader({
               href={backHref}
               className="rounded-full border border-white/32 bg-black/20 px-4 py-2 text-sm text-white/90 transition hover:bg-black/35"
             >
-              Voltar para apresentacao
+              Voltar para apresentação
             </Link>
           ) : null}
 
           <div className="hidden gap-3 text-sm text-white/75 md:flex">
             <span className="rounded-full border border-white/28 bg-black/20 px-4 py-2">
-              {modulesCount} modulos
+              {modulesCount} módulos
             </span>
             <span className="rounded-full border border-white/28 bg-black/20 px-4 py-2">
               {lessonsCount} aulas
@@ -57,4 +56,3 @@ export function CourseHeader({
     </header>
   );
 }
-

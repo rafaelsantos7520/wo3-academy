@@ -64,6 +64,7 @@ const GLASS =
   "border border-white/20 bg-[linear-gradient(135deg,rgba(18,18,18,0.16),rgba(24,24,24,0.10))] backdrop-blur-2xl shadow-[0_10px_36px_rgba(0,0,0,0.28)]";
 const GLASS_SOFT =
   "border border-white/14 bg-[linear-gradient(135deg,rgba(18,18,18,0.12),rgba(24,24,24,0.08))] backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.24)]";
+const WATCHED_EPISODES_KEY = "wo3academy:watched-episodes";
 
 function formatDate(value: string | null | undefined) {
   if (!value) {
@@ -91,7 +92,7 @@ function PlayerSkeleton() {
         </div>
         <div className="text-center">
           <p className="text-sm font-medium text-white">Carregando aula</p>
-          <p className="mt-1 text-xs text-white/60">preparando o video selecionado</p>
+          <p className="mt-1 text-xs text-white/60">preparando o vídeo selecionado</p>
         </div>
       </div>
     </div>
@@ -123,6 +124,7 @@ export function CourseHome({ course }: CourseHomeProps) {
   const [playback, setPlayback] = useState<PlaybackState | null>(null);
   const [playerError, setPlayerError] = useState<string | null>(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [watchedEpisodes, setWatchedEpisodes] = useState<string[]>([]);
 
   const activeEpisode = flatEpisodes.find((episode) => episode.id === activeEpisodeId);
   const activeModule =
@@ -138,6 +140,39 @@ export function CourseHome({ course }: CourseHomeProps) {
     setIsPlayerReady(false);
     setPlayerError(null);
   }
+
+  useEffect(() => {
+    const rawValue = window.localStorage.getItem(WATCHED_EPISODES_KEY);
+
+    if (!rawValue) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(rawValue) as string[];
+      if (Array.isArray(parsed)) {
+        setWatchedEpisodes(parsed);
+      }
+    } catch {
+      window.localStorage.removeItem(WATCHED_EPISODES_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isWatching || !activeEpisodeId) {
+      return;
+    }
+
+    setWatchedEpisodes((previousState) => {
+      if (previousState.includes(activeEpisodeId)) {
+        return previousState;
+      }
+
+      const nextState = [...previousState, activeEpisodeId];
+      window.localStorage.setItem(WATCHED_EPISODES_KEY, JSON.stringify(nextState));
+      return nextState;
+    });
+  }, [activeEpisodeId, isWatching]);
 
   useEffect(() => {
     if (activeEpisode) {
@@ -186,7 +221,7 @@ export function CourseHome({ course }: CourseHomeProps) {
         };
 
         if (!response.ok) {
-          throw new Error(payload.error || "Nao foi possivel carregar o playback.");
+          throw new Error(payload.error || "Não foi possível carregar o playback.");
         }
 
         if (!controller.signal.aborted) {
@@ -197,7 +232,7 @@ export function CourseHome({ course }: CourseHomeProps) {
           setPlayerError(
             error instanceof Error
               ? error.message
-              : "Nao foi possivel carregar o playback.",
+              : "Não foi possível carregar o playback.",
           );
         }
       }
@@ -232,7 +267,7 @@ export function CourseHome({ course }: CourseHomeProps) {
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/82 md:text-base">
               {course.description ||
-                "Treinamento oficial da linha WO3 com base cientifica, protocolos praticos e narrativa comercial para uso profissional."}
+                "Treinamento oficial da linha WO3 com base científica, protocolos práticos e narrativa comercial para uso profissional."}
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-white/80">
@@ -240,7 +275,7 @@ export function CourseHome({ course }: CourseHomeProps) {
               <span className="h-1 w-1 rounded-full bg-white/45" />
               <span>{course.categories.primary.name}</span>
               <span className="h-1 w-1 rounded-full bg-white/45" />
-              <span>{course.modules.length} modulos</span>
+              <span>{course.modules.length} módulos</span>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -254,29 +289,29 @@ export function CourseHome({ course }: CourseHomeProps) {
                 className="rounded-full bg-[#f5e8d5] px-6 py-3  font-semibold  transition hover:bg-[#f0dec3]"
               >
                 <span className="text-sm uppercase tracking-widest text-black/90">
-                  Comecar a assistir
+                  Começar a assistir
                 </span>
               </Link>
               <Link
                 href="#base-tecnologica"
                 className="rounded-full border border-white/30 bg-black/18 px-6 py-3 text-sm font-medium text-white/90 transition hover:bg-black/32"
               >
-                Especificacoes tecnicas
+                Especificações técnicas
               </Link>
             </div>
 
             <div className="mt-8 grid gap-3 md:grid-cols-3">
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
                 <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
-                  Ozonio
+                  Ozônio
                 </p>
-                <p className="mt-2 text-sm text-white/90">Sistema de terapia capilar cosmetica</p>
+                <p className="mt-2 text-sm text-white/90">Sistema de terapia capilar cosmética</p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
                 <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
                   Tecnologia
                 </p>
-                <p className="mt-2 text-sm text-white/90">Carreamento servo assistido e equalizacao ionica</p>
+                <p className="mt-2 text-sm text-white/90">Carreamento servo assistido e equalização iônica</p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
                 <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
@@ -306,17 +341,17 @@ export function CourseHome({ course }: CourseHomeProps) {
         <section className="mx-auto my-8 w-full max-w-[1600px] px-6 lg:px-10">
           <div id="base-tecnologica" className={`${GLASS} rounded-[30px] p-5 md:p-6`}>
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-2xl font-semibold">Base tecnologica WO3</h3>
-              <span className="text-sm text-white/70">{course.modules.length} modulos</span>
+              <h3 className="text-2xl font-semibold">Base tecnológica WO3</h3>
+              <span className="text-sm text-white/70">{course.modules.length} módulos</span>
             </div>
 
             <div className="mb-5 grid gap-3 lg:grid-cols-3">
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
                 <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
-                  Tripe tecnologico
+                  Tripé tecnológico
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
-                  Ozonio, carreamento servo assistido e equalizacao ionica.
+                  Ozônio, carreamento servo assistido e equalização iônica.
                 </p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
@@ -324,7 +359,7 @@ export function CourseHome({ course }: CourseHomeProps) {
                   Sistema profissional
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
-                  Terapia capilar cosmetica para resultados visiveis e protocolos consistentes.
+                  Terapia capilar cosmética para resultados visíveis e protocolos consistentes.
                 </p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
@@ -332,7 +367,7 @@ export function CourseHome({ course }: CourseHomeProps) {
                   Papel do profissional
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
-                  Diagnosticar, ajustar agua e lipideos, reconstruir com inteligencia e finalizar com toque seco.
+                  Diagnosticar, ajustar água e lipídios, reconstruir com inteligência e finalizar com toque seco.
                 </p>
               </div>
             </div>
@@ -453,7 +488,7 @@ export function CourseHome({ course }: CourseHomeProps) {
             ) : (
               <>
                 <p className="text-[11px] uppercase tracking-[0.24em] text-white/65">
-                  Em reproducao
+                  Em reprodução
                 </p>
                 <h3 className="mt-2 text-xl font-semibold leading-tight">
                   {activeEpisode?.name}
@@ -477,6 +512,7 @@ export function CourseHome({ course }: CourseHomeProps) {
           <div className="mt-3 space-y-2">
             {activeModule?.episodes.map((episode) => {
               const selected = episode.id === activeEpisodeId;
+              const watched = watchedEpisodes.includes(episode.id);
 
               return (
                 <Link
@@ -502,9 +538,15 @@ export function CourseHome({ course }: CourseHomeProps) {
                       </p>
                     </div>
                     <div className="shrink-0">
-                      <span className="rounded-full bg-black/30 px-3 py-1 text-xs text-white/85">
-                        {episode.order}
-                      </span>
+                      {watched ? (
+                        <span className="rounded-full border border-emerald-300/45 bg-emerald-400/20 px-3 py-1 text-xs text-emerald-100">
+                          Assistido
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-black/30 px-3 py-1 text-xs text-white/85">
+                          {episode.order}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>
