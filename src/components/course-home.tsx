@@ -61,9 +61,9 @@ type FlatEpisode = CourseEpisode & {
 };
 
 const GLASS =
-  "border border-white/20 bg-[linear-gradient(135deg,rgba(18,18,18,0.16),rgba(24,24,24,0.10))] backdrop-blur-2xl shadow-[0_10px_36px_rgba(0,0,0,0.28)]";
+  "border border-white/20 bg-black/[0.12] backdrop-blur-2xl shadow-[0_10px_36px_rgba(0,0,0,0.28)]";
 const GLASS_SOFT =
-  "border border-white/14 bg-[linear-gradient(135deg,rgba(18,18,18,0.12),rgba(24,24,24,0.08))] backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.24)]";
+  "border border-white/14 bg-black/[0.08] backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.24)]";
 const WATCHED_EPISODES_KEY = "wo3academy:watched-episodes";
 
 function formatDate(value: string | null | undefined) {
@@ -245,21 +245,22 @@ export function CourseHome({ course }: CourseHomeProps) {
 
   if (!isWatching) {
     return (
-      <main className="relative min-h-screen overflow-x-hidden text-white">
-        <div className="pointer-events-none fixed inset-0 -z-30 bg-[url('/produtos.jpeg')] bg-cover bg-center" />
-        <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.22),rgba(15,13,11,0.20)_42%,rgba(4,4,4,0.55)_100%)]" />
-        <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,3,3,0.28)_0%,rgba(3,3,3,0.55)_68%,rgba(3,3,3,0.72)_100%)]" />
+      <main className="relative min-h-screen overflow-x-hidden pt-24 text-white sm:pt-28">
+        <div className="pointer-events-none fixed inset-x-0 top-0 -z-30 h-[100dvh] bg-[url('/produtos.jpeg')] bg-cover bg-center" />
+        <div className="pointer-events-none fixed inset-x-0 top-0 -z-20 h-[100dvh] bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.22),rgba(15,13,11,0.20)_42%,rgba(4,4,4,0.55)_100%)]" />
+        <div className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[100dvh] bg-[linear-gradient(180deg,rgba(3,3,3,0.28)_0%,rgba(3,3,3,0.55)_68%,rgba(3,3,3,0.72)_100%)]" />
 
         <CourseHeader
           title={course.title}
           modulesCount={course.modules.length}
           lessonsCount={totalVideos}
+          brandLabel="Ozon Academy"
           glassClassName={`${GLASS_SOFT} rounded-2xl`}
         />
 
         <section className="mx-auto mt-10 w-full max-w-[1600px] px-6 lg:px-10">
           <article className={`${GLASS} rounded-[30px] p-6 md:p-8`}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-white/65">
+            <p className="text-xs uppercase tracking-[0.3em] text-white/65">
               Ozonect Academy
             </p>
             <h2 className="mt-3 text-4xl font-semibold leading-tight md:text-5xl">
@@ -302,19 +303,19 @@ export function CourseHome({ course }: CourseHomeProps) {
 
             <div className="mt-8 grid gap-3 md:grid-cols-3">
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Ozônio
                 </p>
                 <p className="mt-2 text-sm text-white/90">Sistema de terapia capilar cosmética</p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Tecnologia
                 </p>
                 <p className="mt-2 text-sm text-white/90">Carreamento servo assistido e equalização iônica</p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Resultado
                 </p>
                 <p className="mt-2 text-sm text-white/90">Brilho evidente e acabamento de veludo</p>
@@ -340,14 +341,14 @@ export function CourseHome({ course }: CourseHomeProps) {
 
         <section className="mx-auto my-8 w-full max-w-[1600px] px-6 lg:px-10">
           <div id="base-tecnologica" className={`${GLASS} rounded-[30px] p-5 md:p-6`}>
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
               <h3 className="text-2xl font-semibold">Base tecnológica WO3</h3>
               <span className="text-sm text-white/70">{course.modules.length} módulos</span>
             </div>
 
             <div className="mb-5 grid gap-3 lg:grid-cols-3">
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Tripé tecnológico
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
@@ -355,7 +356,7 @@ export function CourseHome({ course }: CourseHomeProps) {
                 </p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Sistema profissional
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
@@ -363,7 +364,7 @@ export function CourseHome({ course }: CourseHomeProps) {
                 </p>
               </div>
               <div className={`${GLASS_SOFT} rounded-2xl p-4`}>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Papel do profissional
                 </p>
                 <p className="mt-2 text-sm leading-6 text-white/90">
@@ -373,7 +374,7 @@ export function CourseHome({ course }: CourseHomeProps) {
             </div>
 
             <div className="mb-4">
-              <p className="text-[11px] uppercase tracking-[0.24em] text-white/60">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/60">
                 Trilha de treinamento
               </p>
             </div>
@@ -385,21 +386,21 @@ export function CourseHome({ course }: CourseHomeProps) {
                   href={watchHref(module.id, module.episodes[0]?.id ?? "")}
                   onClick={prepareEpisodeChange}
                   scroll={false}
-                  className={`${GLASS_SOFT} group flex w-full cursor-pointer items-center justify-between rounded-[18px] px-4 py-4 text-left transition hover:bg-black/16`}
+                  className={`${GLASS_SOFT} group flex w-full cursor-pointer flex-col items-stretch gap-3 rounded-[18px] px-3.5 py-3.5 text-left transition hover:bg-black/16 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-4`}
                 >
-                  <div className="flex items-center gap-4">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/30 text-sm text-white/85">
+                  <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/30 text-sm text-white/85">
                       {String(module.order).padStart(2, "0")}
                     </span>
-                    <div>
-                      <h4 className="text-xl font-semibold leading-tight text-white">
+                    <div className="min-w-0">
+                      <h4 className="text-base font-semibold leading-tight text-white sm:text-lg lg:text-xl">
                         {module.name}
                       </h4>
                       <p className="mt-1 text-sm text-white/70">{module.episodes.length} aulas</p>
                     </div>
                   </div>
 
-                  <span className="rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.22em] text-white/85">
+                  <span className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.22em] text-white/85 sm:w-auto">
                     Iniciar
                   </span>
                 </Link>
@@ -412,10 +413,10 @@ export function CourseHome({ course }: CourseHomeProps) {
   }
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden text-white">
-      <div className="pointer-events-none fixed inset-0 -z-30 bg-[url('/produtos.jpeg')] bg-cover bg-center" />
-      <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top_left,rgba(234,214,186,0.24),rgba(12,10,9,0.28)_42%,rgba(4,4,4,0.62)_100%)]" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,3,3,0.24)_0%,rgba(3,3,3,0.48)_66%,rgba(3,3,3,0.76)_100%)]" />
+    <main className="relative min-h-screen overflow-x-hidden pt-24 text-white sm:pt-28">
+      <div className="pointer-events-none fixed inset-x-0 top-0 -z-30 h-[100dvh] bg-[url('/produtos.jpeg')] bg-cover bg-center" />
+      <div className="pointer-events-none fixed inset-x-0 top-0 -z-20 h-[100dvh] bg-[radial-gradient(circle_at_top_left,rgba(234,214,186,0.24),rgba(12,10,9,0.28)_42%,rgba(4,4,4,0.62)_100%)]" />
+      <div className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[100dvh] bg-[linear-gradient(180deg,rgba(3,3,3,0.24)_0%,rgba(3,3,3,0.48)_66%,rgba(3,3,3,0.76)_100%)]" />
 
       <CourseHeader
         title={course.title}
@@ -423,13 +424,13 @@ export function CourseHome({ course }: CourseHomeProps) {
         lessonsCount={totalVideos}
         showBackLink
         backHref="/"
-        brandLabel="Ozonteck"
+        brandLabel="Ozon Academy"
         glassClassName={`${GLASS_SOFT} rounded-2xl`}
       />
 
-      <section className="mx-auto my-6 grid w-full max-w-[1600px] gap-6 px-6 lg:grid-cols-[250px_minmax(0,1fr)_350px] lg:px-10">
+      <section className="mx-auto my-4 grid w-full max-w-[1600px] gap-4 px-4 sm:my-6 sm:gap-6 sm:px-6 lg:grid-cols-[250px_minmax(0,1fr)_350px] lg:px-10">
         <aside className={`${GLASS} rounded-3xl p-4`}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-white/65">Trilhas</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-white/65">Trilhas</p>
           <div className="mt-3 space-y-2">
             {course.modules.map((module) => {
               const selected = module.id === activeModule?.id;
@@ -445,11 +446,11 @@ export function CourseHome({ course }: CourseHomeProps) {
                     : "border border-white/16 bg-black/14 backdrop-blur-xl hover:bg-black/26"
                     }`}
                 >
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-white/55">
+                  <p className="text-xs uppercase tracking-[0.22em] text-white/55">
                     Trilha {module.order}
                   </p>
                   <h3 className="mt-1 text-base font-semibold leading-tight">{module.name}</h3>
-                  <p className="mt-1 text-xs text-white/68">{module.episodes.length} aulas</p>
+                  <p className="mt-1 text-sm text-white/68">{module.episodes.length} aulas</p>
                 </Link>
               );
             })}
@@ -487,7 +488,7 @@ export function CourseHome({ course }: CourseHomeProps) {
               <p className="text-sm text-rose-300">{playerError}</p>
             ) : (
               <>
-                <p className="text-[11px] uppercase tracking-[0.24em] text-white/65">
+                <p className="text-xs uppercase tracking-[0.24em] text-white/65">
                   Em reprodução
                 </p>
                 <h3 className="mt-2 text-xl font-semibold leading-tight">
@@ -504,7 +505,7 @@ export function CourseHome({ course }: CourseHomeProps) {
         <aside className={`${GLASS} rounded-3xl p-4`}>
           <div className="border-b border-white/16 pb-3">
             <h3 className="text-lg font-semibold">{activeModule?.name}</h3>
-            <p className="mt-1 text-xs text-white/68">
+            <p className="mt-1 text-sm text-white/68">
               {activeModule?.episodes.length || 0} aulas nesta trilha
             </p>
           </div>
@@ -527,13 +528,13 @@ export function CourseHome({ course }: CourseHomeProps) {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/55">
+                      <p className="text-xs uppercase tracking-[0.22em] text-white/55">
                         Aula {episode.order}
                       </p>
                       <h4 className="mt-1 line-clamp-2 text-base font-semibold leading-tight">
                         {episode.name}
                       </h4>
-                      <p className="mt-1 text-xs text-white/68">
+                      <p className="mt-1 text-sm text-white/68">
                         {minutesLabel(episode.duration)}
                       </p>
                     </div>

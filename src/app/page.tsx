@@ -3,13 +3,18 @@ import { CourseHome } from "@/components/course-home";
 import { LogoMark } from "@/components/logo-mark";
 import { COURSE_SLUG, getCourseContent } from "@/lib/course-content";
 
+function toISO(date: Date | string | null | undefined): string | null {
+  if (!date) return null;
+  return date instanceof Date ? date.toISOString() : new Date(date).toISOString();
+}
+
 function serializeCourse(content: NonNullable<Awaited<ReturnType<typeof getCourseContent>>>) {
   return {
     id: content.id.toString(),
     title: content.title,
     slug: content.slug,
     description: content.description,
-    release_date: content.release_date?.toISOString() ?? null,
+    release_date: toISO(content.release_date),
     categories: {
       primary: content.categories,
       related: content.content_categories.map(({ categories }) => categories),
@@ -24,8 +29,8 @@ function serializeCourse(content: NonNullable<Awaited<ReturnType<typeof getCours
       description: module.description,
       order: module.order,
       is_active: module.is_active,
-      created_at: module.created_at?.toISOString() ?? null,
-      updated_at: module.updated_at?.toISOString() ?? null,
+      created_at: toISO(module.created_at),
+      updated_at: toISO(module.updated_at),
       episodes: module.episodes.map((episode) => ({
         id: episode.id.toString(),
         uuid: episode.uuid,
@@ -36,15 +41,15 @@ function serializeCourse(content: NonNullable<Awaited<ReturnType<typeof getCours
         duration: episode.duration,
         order: episode.order,
         is_active: episode.is_active,
-        release_date: episode.release_date?.toISOString() ?? null,
+        release_date: toISO(episode.release_date),
         thumbnail_url: episode.thumbnail_url,
         cover: episode.cover,
         video_url: episode.video_url,
         video_id: episode.video_id,
         source_cdn: episode.source_cdn,
-        token_expires_at: episode.token_expires_at?.toISOString() ?? null,
-        created_at: episode.created_at?.toISOString() ?? null,
-        updated_at: episode.updated_at?.toISOString() ?? null,
+        token_expires_at: toISO(episode.token_expires_at),
+        created_at: toISO(episode.created_at),
+        updated_at: toISO(episode.updated_at),
       })),
     })),
   };

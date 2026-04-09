@@ -12,8 +12,24 @@ if (!databaseUrl) {
   throw new Error("Missing DB_URL environment variable");
 }
 
+function buildAdapterConfig(url: string) {
+  const parsed = new URL(url);
+  return {
+    host: parsed.hostname,
+    port: parsed.port ? parseInt(parsed.port) : 3306,
+    user: parsed.username,
+    password: decodeURIComponent(parsed.password),
+    database: parsed.pathname.replace(/^\//, ""),
+    allowPublicKeyRetrieval: true,
+    connectTimeout: 30000,
+    socketTimeout: 30000,
+    connectionLimit: 5,
+  };
+}
+
 const adapter =
-  globalForPrisma.prismaAdapter ?? new PrismaMariaDb(databaseUrl);
+  globalForPrisma.prismaAdapter ??
+  new PrismaMariaDb(buildAdapterConfig(databaseUrl));
 
 export const prisma =
   globalForPrisma.prisma ??

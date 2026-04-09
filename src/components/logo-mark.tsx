@@ -1,11 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type LogoMarkProps = {
   size?: number;
   href?: string;
 };
 
-export function LogoMark({ size = 42, href = "/" }: LogoMarkProps) {
+export function LogoMark({ size = 50, href = "/" }: LogoMarkProps) {
   return (
     <Link
       aria-label="Ir para início"
@@ -13,7 +14,7 @@ export function LogoMark({ size = 42, href = "/" }: LogoMarkProps) {
       href={href}
       style={{ width: size, height: size }}
     >
-      <span className="text-sm font-bold uppercase tracking-wider text-white">VP</span>
+      <Image src="/logo.webp" alt="Logo" width={size} height={size} />
     </Link>
   );
 }

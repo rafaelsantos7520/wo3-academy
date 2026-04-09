@@ -17,29 +17,32 @@ export function CourseHeader({
   lessonsCount,
   showBackLink = false,
   backHref = "/",
-  brandLabel = "Vídeo Prime",
+  brandLabel = "Ozon Academy",
   glassClassName,
 }: CourseHeaderProps) {
   return (
-    <header className={`${glassClassName} sticky top-0 z-20 mt-4`}>
-      <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-6 py-4 lg:px-10">
-        <div className="flex items-center gap-3">
+    <header className="fixed inset-x-0 top-0 z-30 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div
+        className={`${glassClassName} mx-auto flex w-full max-w-[1600px] items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 lg:px-10`}
+      >
+        <div className="flex min-w-0 items-center gap-3">
           <LogoMark />
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+          <div className="min-w-0">
+            <p className="text-xs uppercase tracking-[0.32em] text-white/55">
               {brandLabel}
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+            <h1 className="truncate text-lg font-semibold tracking-tight sm:text-2xl">{title}</h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {showBackLink ? (
             <Link
               href={backHref}
-              className="rounded-full border border-white/32 bg-black/20 px-4 py-2 text-sm text-white/90 transition hover:bg-black/35"
+              className="rounded-full border border-white/32 bg-black/20 px-3 py-2 text-xs text-white/90 transition hover:bg-black/35 sm:px-4 sm:text-sm"
             >
-              Voltar para apresentação
+              <span className="sm:hidden">Voltar</span>
+              <span className="hidden sm:inline">Voltar para apresentação</span>
             </Link>
           ) : null}
 

@@ -13,8 +13,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Vídeo Prime",
-  description: "Aplicação simples de vídeos feita com Next.js 15.",
+  title: "Ozon Academy W03",
+  description: "Plataforma oficial de treinamento da linha WO3 — protocolos, ciência e prática para profissionais.",
   icons: {
     icon: "/vp-logo.svg",
     shortcut: "/vp-logo.svg",

@@ -1,0 +1,95 @@
+- main [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ir para início" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]: OA
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: Ozon Academy
+        - heading "Curso Wo3" [level=1] [ref=e10]
+    - generic [ref=e11]:
+      - link "Voltar para apresentação" [ref=e12] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e13]:
+        - generic [ref=e14]: 3 módulos
+        - generic [ref=e15]: 14 aulas
+  - generic [ref=e16]:
+    - complementary [ref=e17]:
+      - paragraph [ref=e18]: Trilhas
+      - generic [ref=e19]:
+        - link "Trilha 1 Módulo 1 Método Wo3 6 aulas" [ref=e20] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1013
+          - paragraph [ref=e21]: Trilha 1
+          - heading "Módulo 1 Método Wo3" [level=3] [ref=e22]
+          - paragraph [ref=e23]: 6 aulas
+        - link "Trilha 2 Módulo 2 Curso WO3 4 aulas" [ref=e24] [cursor=pointer]:
+          - /url: /?view=watch&m=151&e=1018
+          - paragraph [ref=e25]: Trilha 2
+          - heading "Módulo 2 Curso WO3" [level=3] [ref=e26]
+          - paragraph [ref=e27]: 4 aulas
+        - link "Trilha 3 módulo 3 curso WO3 4 aulas" [ref=e28] [cursor=pointer]:
+          - /url: /?view=watch&m=152&e=1022
+          - paragraph [ref=e29]: Trilha 3
+          - heading "módulo 3 curso WO3" [level=3] [ref=e30]
+          - paragraph [ref=e31]: 4 aulas
+    - generic [ref=e32]:
+      - generic [ref=e39]:
+        - paragraph [ref=e40]: Carregando aula
+        - paragraph [ref=e41]: preparando o vídeo selecionado
+      - generic [ref=e42]:
+        - paragraph [ref=e43]: Em reprodução
+        - heading "Apresentação time de master educadores" [level=3] [ref=e44]
+        - paragraph [ref=e45]: Módulo 1 Método Wo3 - 5 min
+    - complementary [ref=e46]:
+      - generic [ref=e47]:
+        - heading "Módulo 1 Método Wo3" [level=3] [ref=e48]
+        - paragraph [ref=e49]: 6 aulas nesta trilha
+      - generic [ref=e50]:
+        - link "Aula 1 Apresentação time de master educadores 5 min 1" [ref=e51] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1013
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - paragraph [ref=e54]: Aula 1
+              - heading "Apresentação time de master educadores" [level=4] [ref=e55]
+              - paragraph [ref=e56]: 5 min
+            - generic [ref=e57]: "1"
+        - link "Aula 2 Aula 2.1 higienização 2 min 2" [ref=e58] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1014
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - paragraph [ref=e61]: Aula 2
+              - heading "Aula 2.1 higienização" [level=4] [ref=e62]
+              - paragraph [ref=e63]: 2 min
+            - generic [ref=e64]: "2"
+        - link "Aula 3 Aula 3 aplicação 4 min 3" [ref=e65] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1015
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - paragraph [ref=e68]: Aula 3
+              - heading "Aula 3 aplicação" [level=4] [ref=e69]
+              - paragraph [ref=e70]: 4 min
+            - generic [ref=e71]: "3"
+        - link "Aula 3 Aula 2.2 Higienizaçao Capilar 24 min 3" [ref=e72] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1026
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - paragraph [ref=e75]: Aula 3
+              - heading "Aula 2.2 Higienizaçao Capilar" [level=4] [ref=e76]
+              - paragraph [ref=e77]: 24 min
+            - generic [ref=e78]: "3"
+        - link "Aula 4 Aula 4 escova terapêutica 8 min 4" [ref=e79] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1016
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - paragraph [ref=e82]: Aula 4
+              - heading "Aula 4 escova terapêutica" [level=4] [ref=e83]
+              - paragraph [ref=e84]: 8 min
+            - generic [ref=e85]: "4"
+        - link "Aula 5 Aula 5 finalização 6 min 5" [ref=e86] [cursor=pointer]:
+          - /url: /?view=watch&m=150&e=1017
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: Aula 5
+              - heading "Aula 5 finalização" [level=4] [ref=e90]
+              - paragraph [ref=e91]: 6 min
+            - generic [ref=e92]: "5"

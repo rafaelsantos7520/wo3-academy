@@ -1,0 +1,76 @@
+- main [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ir para início" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]: OA
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: Ozon Academy
+        - heading "Curso Wo3" [level=1] [ref=e10]
+    - generic [ref=e12]:
+      - generic [ref=e13]: 3 módulos
+      - generic [ref=e14]: 14 aulas
+  - article [ref=e16]:
+    - paragraph [ref=e17]: Ozonect Academy
+    - heading "Plataforma WO3 Pro Web" [level=2] [ref=e18]
+    - paragraph [ref=e19]: Curso Wo3
+    - generic [ref=e20]:
+      - generic [ref=e21]: 05 de abr. de 2026
+      - generic [ref=e23]: Curso Wo3
+      - generic [ref=e25]: 3 módulos
+    - generic [ref=e26]:
+      - link "Começar a assistir" [ref=e27] [cursor=pointer]:
+        - /url: /?view=watch&m=150&e=1013
+      - link "Especificações técnicas" [ref=e28] [cursor=pointer]:
+        - /url: "#base-tecnologica"
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - paragraph [ref=e31]: Ozônio
+        - paragraph [ref=e32]: Sistema de terapia capilar cosmética
+      - generic [ref=e33]:
+        - paragraph [ref=e34]: Tecnologia
+        - paragraph [ref=e35]: Carreamento servo assistido e equalização iônica
+      - generic [ref=e36]:
+        - paragraph [ref=e37]: Resultado
+        - paragraph [ref=e38]: Brilho evidente e acabamento de veludo
+  - img "Linha WO3 Ozonizada" [ref=e41]
+  - generic [ref=e43]:
+    - generic [ref=e44]:
+      - heading "Base tecnológica WO3" [level=3] [ref=e45]
+      - generic [ref=e46]: 3 módulos
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: Tripé tecnológico
+        - paragraph [ref=e50]: Ozônio, carreamento servo assistido e equalização iônica.
+      - generic [ref=e51]:
+        - paragraph [ref=e52]: Sistema profissional
+        - paragraph [ref=e53]: Terapia capilar cosmética para resultados visíveis e protocolos consistentes.
+      - generic [ref=e54]:
+        - paragraph [ref=e55]: Papel do profissional
+        - paragraph [ref=e56]: Diagnosticar, ajustar água e lipídios, reconstruir com inteligência e finalizar com toque seco.
+    - paragraph [ref=e58]: Trilha de treinamento
+    - generic [ref=e59]:
+      - link "01 Módulo 1 Método Wo3 6 aulas Iniciar" [ref=e60] [cursor=pointer]:
+        - /url: /?view=watch&m=150&e=1013
+        - generic [ref=e61]:
+          - generic [ref=e62]: "01"
+          - generic [ref=e63]:
+            - heading "Módulo 1 Método Wo3" [level=4] [ref=e64]
+            - paragraph [ref=e65]: 6 aulas
+        - generic [ref=e66]: Iniciar
+      - link "02 Módulo 2 Curso WO3 4 aulas Iniciar" [ref=e67] [cursor=pointer]:
+        - /url: /?view=watch&m=151&e=1018
+        - generic [ref=e68]:
+          - generic [ref=e69]: "02"
+          - generic [ref=e70]:
+            - heading "Módulo 2 Curso WO3" [level=4] [ref=e71]
+            - paragraph [ref=e72]: 4 aulas
+        - generic [ref=e73]: Iniciar
+      - link "03 módulo 3 curso WO3 4 aulas Iniciar" [ref=e74] [cursor=pointer]:
+        - /url: /?view=watch&m=152&e=1022
+        - generic [ref=e75]:
+          - generic [ref=e76]: "03"
+          - generic [ref=e77]:
+            - heading "módulo 3 curso WO3" [level=4] [ref=e78]
+            - paragraph [ref=e79]: 4 aulas
+        - generic [ref=e80]: Iniciar
